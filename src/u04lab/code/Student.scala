@@ -6,7 +6,7 @@ import u04lab.code.Lists.List.{Cons, nil} // import custom List type (not the on
 trait Student {
   def name: String
   def year: Int
-  def enrolling(course: Course): Unit // the student participates to a Course
+  def enrolling(course: Course*): Unit // the student participates to a Course
   def courses: List[String] // names of course the student participates to
   def hasTeacher(teacher: String): Boolean // is the student participating to a course of this teacher?
 }
@@ -24,7 +24,7 @@ object Student {
 
     private var _courses: List[Course] = List.Nil()
 
-    override def enrolling(course: Course): Unit = _courses = Cons(course, _courses)
+    override def enrolling(courseToAdd: Course*): Unit = courseToAdd foreach(course => _courses = List.append(_courses, Cons(course, List.Nil())))
 
     override def courses: List[String] = List.map(_courses)(_.name)
 
