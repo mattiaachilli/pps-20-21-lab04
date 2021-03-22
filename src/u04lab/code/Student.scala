@@ -24,7 +24,7 @@ object Student {
 
     private var _courses: List[Course] = Nil()
 
-    override def enrolling(courseToAdd: Course*): Unit = courseToAdd foreach(course => _courses = append(_courses, Cons(course, Nil())))
+    override def enrolling(courseToAdd: Course*): Unit = courseToAdd foreach (course => _courses = append(_courses, Cons(course, Nil())))
 
     override def courses: List[String] = map(_courses)(_.name)
 
