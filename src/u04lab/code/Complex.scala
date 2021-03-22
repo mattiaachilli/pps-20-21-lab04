@@ -1,6 +1,6 @@
 package u04lab.code
 
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.{assertEquals, assertFalse, assertTrue}
 import org.junit.jupiter.api.Test
 
 trait Complex {
@@ -38,6 +38,8 @@ object ComplexTest {
   @Test def testComplexEquality(): Unit = {
     val complex = Complex(-10, 20)
     val complex1 = Complex(-10, 20)
+    assertTrue(complex == complex1)
+    assertFalse(complex eq complex1)
     assertEquals(complex1, complex)
     assertEquals("ComplexImpl(-10.0,20.0)", complex.toString)
   }
