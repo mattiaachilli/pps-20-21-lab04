@@ -32,7 +32,7 @@ object Student {
   }
 }
 
-class StudentCourseTest {
+object StudentCourseTest {
   import org.junit.jupiter.api.Assertions.{assertEquals, assertTrue}
   import org.junit.jupiter.api.{BeforeEach, Test}
 
