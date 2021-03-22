@@ -10,13 +10,13 @@ trait Complex {
 object Complex {
   def apply(re:Double, im:Double):Complex = new ComplexImpl(re, im) // Fill here
 
-  private class ComplexImpl(override val re: Double,
+  private case class ComplexImpl(override val re: Double,
                     override val im: Double) extends Complex {
     require (re != null && im != null)
 
-    override def +(c: Complex): Complex = new ComplexImpl(re + c.re, im + c.im)
+    override def +(c: Complex): Complex = ComplexImpl(re + c.re, im + c.im)
 
-    override def *(c: Complex): Complex = new ComplexImpl((re * c.re) - (im * c.im), (re * c.im) + (im * c.re))
+    override def *(c: Complex): Complex = ComplexImpl((re * c.re) - (im * c.im), (re * c.im) + (im * c.re))
   }
 }
 
