@@ -51,6 +51,8 @@ object Lists extends App {
       case Nil() => acc
     }
 
+    def appendByFold[A](l1: List[A], l2: List[A]): List[A] = foldRight(l1)(l2)((x, acc) => Cons(x, acc))
+
     def foldRightNonTailRec[A,B](l: List[A])(acc: B)(f: (A,B)=>B): B = l match {
       case Cons(h,t) => f(h, foldRightNonTailRec(t)(acc)(f))
       case Nil() => acc
@@ -65,11 +67,12 @@ object Lists extends App {
     def foldRight[A,B](l: List[A])(acc: B)(f: (A,B)=>B): B =
       foldRightViaFoldleft(l)(acc)(f)
 
-    def filterByFlatmap[A](l: List[A])(f: A => Boolean): List[A] = ???
+    def filterByFlatmap[A](l: List[A])(f: A => Boolean): List[A] = flatMap(l){
+      case a if f(a) => Cons(a, Nil())
+      case _ => Nil()
+    }
 
-    def appendByFold[A](l1: List[A], l2: List[A]): List[A] = ???
-
-    def length(l: List[_]): Int = ???
+    def length(l: List[_]): Int = foldLeft(l)(0)((acc, _) => acc + 1)
 
     def contains[A](l: List[A])(elem: A): Boolean = l match {
       case Cons(head, _) if head == elem => true
