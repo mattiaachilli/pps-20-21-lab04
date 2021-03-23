@@ -10,6 +10,12 @@ object Lists extends App {
   // a companion object (i.e., module) for List
   object List {
 
+    def apply[A](items: A*): List[A] = {
+      var list: List[A] = Nil()
+      items.foreach(e => list = append(list, Cons(e, Nil())))
+      list
+    }
+
     case class Cons[E](head: E, tail: List[E]) extends List[E]
 
     case class Nil[E]() extends List[E]
@@ -82,6 +88,10 @@ object Lists extends App {
       case Cons(_, tail) => contains(tail)(elem)
       case Nil() => false
     }
+
+    trait ListFactory {
+      def create
+    }
   }
 
   // Note "List." qualification
@@ -110,4 +120,6 @@ object Lists extends App {
   println(appendByFold(Cons(3,Cons(7,Nil())), Cons(1,Cons(5,Nil())))) // Cons(3,Cons(7,Cons(1,Cons(5, Nil()))))
   println(length(Nil())) // 0
   println(length(Cons(3,Cons(7,Cons(1,Cons(5, Nil())))))) // 4
+
+  println(List(10, 20, 30, 40, 50)) //Cons(10,Cons(20,Cons(30,Cons(40,Cons(50,Nil())))))
 }
