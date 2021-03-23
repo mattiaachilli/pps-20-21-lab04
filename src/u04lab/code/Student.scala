@@ -1,7 +1,9 @@
 package u04lab.code
 
-import Lists._
-import u04lab.code.Lists.List.{Cons, Nil, append, map, contains} // import custom List type (not the one in Scala stdlib)
+import Lists.List
+import Lists.List._
+import org.junit.jupiter.api.Assertions.fail
+import u04lab.code.Lists.List.{Cons, Nil, append, contains, map} // import custom List type (not the one in Scala stdlib)
 
 trait Student {
   def name: String
@@ -32,11 +34,19 @@ object Student {
   }
 }
 
+object SameTeacher {
+  def unapply(courses: List[Course]): Option[String] = courses match {
+    case Cons(head, tail) if (foldLeft(tail)(true)((acc,l) => acc && head.teacher == l.teacher)) => Some(head.teacher)
+    case _ => None
+  }
+}
+
 object StudentCourseTest {
   import org.junit.jupiter.api.Assertions.{assertEquals, assertTrue}
   import org.junit.jupiter.api.{BeforeEach, Test}
 
   val cPPS: Course = Course("PPS","Viroli")
+  val cOOP: Course = Course("OOP","Viroli")
   val cPCD: Course = Course("PCD","Ricci")
   val cSDR: Course = Course("SDR","D'Angelo")
   val cASW: Course = Course("AWS", "Mirri")
@@ -62,6 +72,20 @@ object StudentCourseTest {
     assertEquals(Cons("PPS",Cons("PCD", Cons("SDR", Cons("AWS", Nil())))), s1.courses)
     assertTrue(s1.hasTeacher("D'Angelo"))
     assertTrue(s1.hasTeacher("Mirri"))
+  }
+
+  @Test def testUnapplyMatches(): Unit = {
+    List(cPPS, cOOP) match {
+      case SameTeacher("Viroli") => assertTrue(true)
+      case _ => fail("Should have matched with sameTeacher")
+    }
+  }
+
+  @Test def testUnapplyDoesNotMatch(): Unit = {
+    List(cPPS, cOOP, cPCD) match {
+      case SameTeacher(_) => fail("Should not match with sameTeacher")
+      case _ => assertTrue(true)
+    }
   }
 }
 
