@@ -30,7 +30,7 @@ object Streams extends App {
 
     def filter[A](stream: Stream[A])(pred: A => Boolean): Stream[A] = stream match {
       case Cons(head, tail) if (pred(head())) => cons(head(), filter(tail())(pred))
-      case Cons(head, tail) => filter(tail())(pred)
+      case Cons(_, tail) => filter(tail())(pred)
       case _ => Empty()
     }
 
@@ -57,6 +57,11 @@ object Streams extends App {
     def iterate[A](init: => A)(next: A => A): Stream[A] = cons(init, iterate(next(init))(next))
 
     def generate[A](next: => A): Stream[A] = cons(next, generate(next))
+
+    def fromList[A](list: List[A]): Stream[A] = list match {
+      case List.Cons(head, tail) => cons(head, fromList(tail))
+      case _ => Empty()
+    }
 
   }
 

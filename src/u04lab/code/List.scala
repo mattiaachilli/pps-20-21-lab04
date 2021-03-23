@@ -74,12 +74,12 @@ object Lists extends App {
 
     def length(l: List[_]): Int = foldLeft(l)(0)((acc, _) => acc + 1)
 
+    @tailrec
     def contains[A](l: List[A])(elem: A): Boolean = l match {
       case Cons(head, _) if head == elem => true
       case Cons(_, tail) => contains(tail)(elem)
       case Nil() => false
     }
-  }
 
   // Note "List." qualification
   println(List.sum(List.Cons(10, List.Cons(20, List.Cons(30, List.Nil()))))) // 60

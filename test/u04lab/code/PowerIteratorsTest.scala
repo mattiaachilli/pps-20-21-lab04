@@ -17,10 +17,15 @@ class PowerIteratorsTest {
     assertEquals(Option.of(7), pi.next());
     assertEquals(Option.of(9), pi.next());
     assertEquals(Option.of(11), pi.next());
-    assertEquals(List.Cons(5, List.Cons(7, List.Cons(9, List.Cons(11,List.Nil())))), pi.allSoFar()); // elementi già prodotti
-    for (i <- 0 until 10) {
+    assertEquals(Cons(5, Cons(7, Cons(9, Cons(11, Nil())))), pi.allSoFar()); // elementi già prodotti
+    val piReversed = pi.reversed()
+    for (_ <- 0 until 10) {
       pi.next(); // procedo in avanti per un po'..
     }
-    assertEquals(Option.of(33), pi.next()); // sono arrivato a 33
+    assertEquals(Option.of(11), piReversed.next());
+    assertEquals(Option.of(9), piReversed.next());
+    assertEquals(Option.of(7), piReversed.next());
+    assertEquals(Option.of(5), piReversed.next());
+    assertEquals(Cons(11, Cons(9, Cons(7, Cons(5, Nil())))), piReversed.allSoFar());
   }
 }
