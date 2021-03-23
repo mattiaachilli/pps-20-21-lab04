@@ -9,7 +9,9 @@ object Lists extends App {
 
   // a companion object (i.e., module) for List
   object List {
+
     case class Cons[E](head: E, tail: List[E]) extends List[E]
+
     case class Nil[E]() extends List[E]
 
     def nil[A]: List[A] = Nil() // smart constructor
@@ -25,49 +27,49 @@ object Lists extends App {
     }
 
     def drop[A](l: List[A], n: Int): List[A] = l match {
-      case _ if n<=0 || l==Nil() => l
-      case Cons(h,t) => drop(t,n-1)
+      case _ if n <= 0 || l == Nil() => l
+      case Cons(h, t) => drop(t, n - 1)
     }
 
-    def map[A,B](l: List[A])(f: A => B): List[B] = l match {
-      case Cons(h,t) => Cons(f(h), map(t)(f))
+    def map[A, B](l: List[A])(f: A => B): List[B] = l match {
+      case Cons(h, t) => Cons(f(h), map(t)(f))
       case Nil() => Nil()
     }
 
     def filter[A](l: List[A])(f: A => Boolean): List[A] = l match {
-      case Cons(h,t) if f(h) => Cons(h, filter(t)(f))
-      case Cons(h,t) => filter(t)(f)
+      case Cons(h, t) if f(h) => Cons(h, filter(t)(f))
+      case Cons(h, t) => filter(t)(f)
       case Nil() => Nil()
     }
 
-    def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = l match {
-      case Cons(h,t) => append(f(h),flatMap(t)(f))
+    def flatMap[A, B](l: List[A])(f: A => List[B]): List[B] = l match {
+      case Cons(h, t) => append(f(h), flatMap(t)(f))
       case Nil() => Nil()
     }
 
     @tailrec
-    def foldLeft[A,B](l: List[A])(acc: B)(f: (B,A)=>B): B = l match {
-      case Cons(h,t) => foldLeft(t)(f(acc,h))(f)
+    def foldLeft[A, B](l: List[A])(acc: B)(f: (B, A) => B): B = l match {
+      case Cons(h, t) => foldLeft(t)(f(acc, h))(f)
       case Nil() => acc
     }
 
     def appendByFold[A](l1: List[A], l2: List[A]): List[A] = foldRight(l1)(l2)((x, acc) => Cons(x, acc))
 
-    def foldRightNonTailRec[A,B](l: List[A])(acc: B)(f: (A,B)=>B): B = l match {
-      case Cons(h,t) => f(h, foldRightNonTailRec(t)(acc)(f))
+    def foldRightNonTailRec[A, B](l: List[A])(acc: B)(f: (A, B) => B): B = l match {
+      case Cons(h, t) => f(h, foldRightNonTailRec(t)(acc)(f))
       case Nil() => acc
     }
 
-    def reverse[A](l: List[A]) : List[A] =
-      foldLeft(l)(nil[A])((acc,elem) => Cons(elem,acc))
+    def reverse[A](l: List[A]): List[A] =
+      foldLeft(l)(nil[A])((acc, elem) => Cons(elem, acc))
 
-    def foldRightViaFoldleft[A,B](l: List[A])(acc: B)(f: (A,B)=>B): B =
-      foldLeft(reverse(l))(acc)((acc,elem) => f(elem,acc))
+    def foldRightViaFoldleft[A, B](l: List[A])(acc: B)(f: (A, B) => B): B =
+      foldLeft(reverse(l))(acc)((acc, elem) => f(elem, acc))
 
-    def foldRight[A,B](l: List[A])(acc: B)(f: (A,B)=>B): B =
+    def foldRight[A, B](l: List[A])(acc: B)(f: (A, B) => B): B =
       foldRightViaFoldleft(l)(acc)(f)
 
-    def filterByFlatmap[A](l: List[A])(f: A => Boolean): List[A] = flatMap(l){
+    def filterByFlatmap[A](l: List[A])(f: A => Boolean): List[A] = flatMap(l) {
       case a if f(a) => Cons(a, Nil())
       case _ => Nil()
     }
@@ -80,6 +82,7 @@ object Lists extends App {
       case Cons(_, tail) => contains(tail)(elem)
       case Nil() => false
     }
+  }
 
   // Note "List." qualification
   println(List.sum(List.Cons(10, List.Cons(20, List.Cons(30, List.Nil()))))) // 60

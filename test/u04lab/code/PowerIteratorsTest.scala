@@ -11,7 +11,7 @@ class PowerIteratorsTest {
   val factory = new PowerIteratorsFactoryImpl()
 
   @Test
-  def testIncremental() {
+  def testIncremental(): Unit = {
     val pi = factory.incremental(5,_+2); // pi produce 5,7,9,11,13,...
     assertEquals(Option.of(5), pi.next());
     assertEquals(Option.of(7), pi.next());
@@ -27,5 +27,15 @@ class PowerIteratorsTest {
     assertEquals(Option.of(7), piReversed.next());
     assertEquals(Option.of(5), piReversed.next());
     assertEquals(Cons(11, Cons(9, Cons(7, Cons(5, Nil())))), piReversed.allSoFar());
+  }
+
+  @Test
+  def testRandomBooleans(): Unit = {
+    val pi = factory.randomBooleans(10)
+    for (_ <- 0 until 10) {
+      pi.next();
+    }
+    pi.next();
+    assertEquals(10, length(pi.allSoFar()))
   }
 }
